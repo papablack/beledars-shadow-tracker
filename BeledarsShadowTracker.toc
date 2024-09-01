@@ -1,0 +1,7 @@
+## Interface: 90205
+## Title: Beledar's Shadow Tracker
+## Notes: Tracks Beledar's Shadow status in Hallowfall
+## Author: YourName
+## Version: 1.0
+
+BeledarsShadowTracker.lua
