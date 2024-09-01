@@ -15,6 +15,15 @@ function zone_detect.GetMapID()
 end
 
 function zone_detect.IsInHallowfall()
-    local mapID = C_Map.GetBestMapForUnit("player")
-    return mapID == 2025  -- Hallowfall map ID
+    local mapID = 0
+
+    local success, error_message = pcall(function()        
+         mapID = C_Map.GetBestMapForUnit("player")
+    end)    
+        
+    if not success then
+        print(error_message)     
+    else
+        return mapID == 2215
+    end    
 end

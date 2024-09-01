@@ -5,9 +5,9 @@
 ## Version: 1.0
 
 utils/colors.lua
+utils/print_utils.lua
 utils/time_utils.lua
 utils/debug_bag.lua
-utils/print_utils.lua
 modules/halowfall.lua
 modules/zone_detect.lua
 bst_events.lua

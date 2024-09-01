@@ -25,26 +25,26 @@ if DEBUG_MODE then
     end
 end
 
-local timer = nil
 
 local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 
-local function MainActionsWrapper()
+local function MainActionsWrapper(event)
     if event == "PLAYER_ENTERING_WORLD" then
         bst_events.OnWorldEnter(event)
     end
 
     if zone_detect.IsInHallowfall() then
-        print("Entered Hallowfall. Starting %s.", addonName)
-        time_utils.StartTimer()
+        print_utils.PrintMessage("Entered Hallowfall. Starting %s.", addonName)        
+
     end
 end
 
 frame:SetScript("OnEvent", function(self, event)
     local success, error_message = pcall(function()        
-        MainActionsWrapper()        
+        MainActionsWrapper(event) 
+        time_utils.StartTimer()       
     end)
     
     if not success then
