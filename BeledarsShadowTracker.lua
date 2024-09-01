@@ -1,45 +1,55 @@
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+local addonName, addonTable = ...
+_G[addonName] = addonTable
 
-local function CheckBeledarsShadow()
-    local a = (GetQuestResetTime() + 3660) % 10800
-    local message = format("\124cffa060ffBeledar's Shadow in\124r \124cffffffff%s%s%ds (%s Local Time)\124r",
-        a > 3600 and floor(a / 3600) .. "h " or "",
-        a > 60 and floor(a / 60 % 60) .. "m " or "",
-        a % 60,
-        date("%H:%M", a + time())
-    )
-    print(message)
-end
 
-local function IsInHallowfall()
-    local mapID = C_Map.GetBestMapForUnit("player")
-    return mapID == 2025  -- Hallowfall map ID
+local zone_detect = addonTable.zone_detect;
+local time_utils = addonTable.time_utils;
+local bst_events = addonTable.bst_events;
+local print_utils = addonTable.print_utils;
+local debug_bag = addonTable.debug_bag;
+local colors = addonTable.colors;
+
+local DEBUG_MODE = true;
+
+if DEBUG_MODE then
+    local success, error_message = pcall(function()
+        debug_bag.ProcessDebug(addonName, addonTable, DEBUG_MODE)
+        print_utils.PrintMessage("%s Debug mode: " .. colors.red(tostring(addonTable.debug_enabled == true)), colors.yellow(""))
+    end)
+
+    if not success then    
+        print_utils.PrintMessage("%s in %s: %s", colors.red("[DEBUG ERROR]"), addonName,error_message)        
+    else            
+        print_utils.PrintMessage(colors.yellow("Debug mode intialized"))
+
+    end
 end
 
 local timer = nil
 
-local function StartTimer()
-    if timer then
-        timer:Cancel()
+local frame = CreateFrame("Frame")
+frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+
+local function MainActionsWrapper()
+    if event == "PLAYER_ENTERING_WORLD" then
+        bst_events.OnWorldEnter(event)
     end
-    timer = C_Timer.NewTicker(60, function()
-        if IsInHallowfall() then
-            CheckBeledarsShadow()
-        else
-            print("You've left Hallowfall. Stopping Beledar's Shadow tracking.")
-            if timer then
-                timer:Cancel()
-                timer = nil
-            end
-        end
-    end)
+
+    if zone_detect.IsInHallowfall() then
+        print("Entered Hallowfall. Starting %s.", addonName)
+        time_utils.StartTimer()
+    end
 end
 
 frame:SetScript("OnEvent", function(self, event)
-    if IsInHallowfall() then
-        print("Entered Hallowfall. Starting Beledar's Shadow tracking.")
-        StartTimer()
+    local success, error_message = pcall(function()        
+        MainActionsWrapper()        
+    end)
+    
+    if not success then
+        print_utils.PrintMessage("%s in %s: %s", colors.red("[FATAL ERROR]"), addonName,error_message)        
+    else
+        print_utils.PrintMessage(colors.green("Addon started"))
     end
 end)

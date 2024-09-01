@@ -1,7 +1,14 @@
 ## Interface: 90205
 ## Title: Beledar's Shadow Tracker
 ## Notes: Tracks Beledar's Shadow status in Hallowfall
-## Author: YourName
+## Author: PapaBlack
 ## Version: 1.0
 
+utils/colors.lua
+utils/time_utils.lua
+utils/debug_bag.lua
+utils/print_utils.lua
+modules/halowfall.lua
+modules/zone_detect.lua
+bst_events.lua
 BeledarsShadowTracker.lua
