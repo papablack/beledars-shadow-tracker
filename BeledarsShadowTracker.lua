@@ -29,8 +29,10 @@ local function StartTimer()
             CheckBeledarsShadow()
         else
             print("You've left Hallowfall. Stopping Beledar's Shadow tracking.")
-            timer:Cancel()
-            timer = nil
+            if timer then
+                timer:Cancel()
+                timer = nil
+            end
         end
     end)
 end
