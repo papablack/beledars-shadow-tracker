@@ -14,9 +14,9 @@ function time_utils.StartTimer()
     if timer then
         timer:Cancel()
     end
-    timer = C_Timer.NewTicker(1800, function()
+    timer = C_Timer.NewTicker(120, function()
         if C_Map.GetBestMapForUnit("player") == 2215 then
-            -- print_utils.PrintMessage("%s Checking Beledar's Shadow tracking.", colors.yellow("[DEBUG]"))            
+            print_utils.PrintMessage("%s Checking Beledar's Shadow tracking.", colors.yellow("[DEBUG]"))            
 
             local a = (GetQuestResetTime() + 3660) % 10800
             local message = format("\124cffa060ffBeledar's Shadow in\124r \124cffffffff%s%s%ds\124r",
