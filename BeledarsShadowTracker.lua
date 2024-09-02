@@ -30,6 +30,8 @@ local frame = CreateFrame("Frame")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 
+
+
 local function MainActionsWrapper(event)
     if event == "PLAYER_ENTERING_WORLD" then
         bst_events.OnWorldEnter(event)
@@ -37,14 +39,15 @@ local function MainActionsWrapper(event)
 
     if zone_detect.IsInHallowfall() then
         print_utils.PrintMessage("Entered Hallowfall. Starting %s.", addonName)        
-
+    else
+        print_utils.PrintMessage("Not in Hallowfall. Starting %s.", addonName)         
     end
 end
 
 frame:SetScript("OnEvent", function(self, event)
     local success, error_message = pcall(function()        
         MainActionsWrapper(event) 
-        time_utils.StartTimer()       
+        time_utils.StartTimer()
     end)
     
     if not success then
